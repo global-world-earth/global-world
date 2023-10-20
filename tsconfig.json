@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "ESNext",
+            "dom"
+        ],
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "declaration": true,
+        "alwaysStrict": true,
+        "diagnostics": true,
+        "moduleResolution": "Node",
+        "extendedDiagnostics": true,
+        "forceConsistentCasingInFileNames": true,
+        "listEmittedFiles": true,
+        "listFiles": true,
+        "declarationMap": true,
+        "module": "ES6",
+        "outDir": "./dist",
+        "pretty": true,
+        "target": "es6",
+        "strict": true,
+        "paths": {
+            
+        },
+        "typeRoots": []
+    },
+}
