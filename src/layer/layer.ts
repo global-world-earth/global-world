@@ -1,14 +1,42 @@
 import { Event } from "../core/event";
+import { GlobalMap } from "../interface/map";
+import { LayerOptions } from "../ts-type/layer";
 
 export abstract class Layer extends Event {
     public id = 'layer';
     public zIndex: number = 1;
+    public opacity: number = 1;
     public visible: boolean = true;
     public zooms: [number, number] = [2, 26];
+    // 是否预加载数据
+    public preLoad: boolean = false;
+    public depth: boolean = false;
+    public map: GlobalMap | undefined;
 
     constructor(opts: LayerOptions) {
         super();
         this._setOptions(opts);
+
+        if (opts.map) {
+            this.setMap(opts.map);
+        }
+    }
+
+    /**
+     * 需要实现是否加载数据，是否渲染等逻辑
+     */
+    public abstract render: () => void;
+
+    public setMap(map: GlobalMap | null) {
+        if (this.map === map) {
+            return;
+        }
+        if (map) {
+            this.map = map;
+            this.onAdd();
+        } else {
+            this.map = undefined;
+        }
     }
 
     public setzIndex(zIndex: number) {
@@ -21,6 +49,24 @@ export abstract class Layer extends Event {
 
     public setZooms(zooms: [number, number]) {
         this.zooms = zooms;
+    }
+
+    public setOpacity(opacity: number) {
+        this.opacity = opacity;
+    }
+
+    public destroy() {
+        this.map = undefined;
+    }
+
+    /**
+     * 当添加到地图上的时候
+     */
+    protected onAdd() {
+        if (this.preLoad) {
+
+        }
+        this.map?.requestRender();
     }
 
     private _setOptions(opts: LayerOptions) {

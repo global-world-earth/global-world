@@ -1,24 +1,21 @@
 import { CoreMap } from '../core/map';
+import { Layer } from '../layer/layer';
 export class GlobalMap extends CoreMap {
-    public status: ViewStatus = {
-        center: [116, 40],
-        zoom: 12,
-        pitch: 0,
-        rotation: 0,
-    };
-
-    public layers: Layer = [];
 
     constructor(opts: MapOptions) {
         super(opts);
         Object.assign(this.status, opts);
     }
 
-    public setViewStatus() {
-
+    public setViewStatus(status: ViewStatus) {
+        return Object.assign(this.status, status);
     }
 
-    private _render() {
+    public getViewStatus() {
+        return this.status;
+    }
 
+    public requestRender() {
+        this.render();
     }
 }
