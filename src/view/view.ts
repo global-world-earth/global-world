@@ -4,7 +4,6 @@ export class View extends Event {
     constructor() {
         super();
     }
-
     
     
 }

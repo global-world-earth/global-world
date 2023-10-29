@@ -5,7 +5,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json'
 import { terser } from 'rollup-plugin-terser';
 import requireContext from 'rollup-plugin-require-context';
-import swc from 'rollup-plugin-swc';
+import swc from 'rollup-plugin-swc3';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -60,31 +60,21 @@ let plugins = [...basePlugins].concat(isProd ? prodPlugins : devPlugins);
 
 export default [
     {
-        input: './src/Viewer.js',
+        input: './src/index.ts',
         output: [
             {
-                file: './dist/nerf-umd.js',
+                file: './dist/gmap-umd.js',
                 format: 'umd',
-                name: 'CMap',
+                name: 'GMap',
                 //当入口文件有export时，'umd'格式必须指定name
                 //这样，在通过<script>标签引入时，才能通过name访问到export的内容。
             },
             {
-                file: './dist/nerf-es.js',
+                file: './dist/gmap-es.js',
                 format: 'es',
             },
             {
-                file: './dist/nerf-cjs.js',
-                format: 'cjs',
-            },
-        ],
-        plugins,
-    },
-    {
-        input: './src/Script.js',
-        output: [
-            {
-                file: './dist/nerf-script-cjs.js',
+                file: './dist/gmap-cjs.js',
                 format: 'cjs',
             },
         ],

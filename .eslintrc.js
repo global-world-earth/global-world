@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     root: true,
     parser: '@typescript-eslint/parser',
     extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
@@ -11,4 +11,4 @@ module.exports = {
         '@typescript-eslint/interface-name-prefix': ['off'],
         '@typescript-eslint/ban-types': ['off'],
     },
-};
+}

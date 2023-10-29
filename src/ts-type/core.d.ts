@@ -1,5 +1,6 @@
 // 地图接口
 interface MapOptions {
+    container: string,
     zoom: number;
     pitch: number;
     rotation: number;

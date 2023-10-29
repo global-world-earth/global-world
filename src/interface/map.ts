@@ -1,5 +1,6 @@
 import { CoreMap } from '../core/map';
 import { Layer } from '../layer/layer';
+
 export class GlobalMap extends CoreMap {
 
     constructor(opts: MapOptions) {
