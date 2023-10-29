@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "dependencies": {
+    "gl-matrix": "^3.4.3",
+    "regl": "^2.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-eslint": "^9.0.5",
