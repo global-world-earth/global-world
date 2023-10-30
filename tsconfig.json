@@ -1,29 +1,24 @@
 {
-    "compilerOptions": {
-        "lib": [
-            "ESNext",
-            "dom"
-        ],
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "sourceMap": true,
-        "declaration": true,
-        "alwaysStrict": true,
-        "diagnostics": true,
-        "moduleResolution": "Node",
-        "extendedDiagnostics": true,
-        "forceConsistentCasingInFileNames": true,
-        "listEmittedFiles": true,
-        "listFiles": true,
-        "declarationMap": true,
-        "module": "ES6",
-        "outDir": "./dist",
-        "pretty": true,
-        "target": "es6",
-        "strict": true,
-        "paths": {
-            
-        },
-        "typeRoots": []
-    },
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true,
+    "module": "ES6",
+    "target": "ES2018",
+    "noImplicitAny": false,
+    "declaration": true,
+    "outDir": "dist",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "lib": ["ES2018", "DOM"],
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src",
+    "types"
+  ],
+  "exclude": ["node_modules", "**/__test?__", "**/dist"]
 }

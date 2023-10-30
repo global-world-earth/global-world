@@ -1,8 +1,8 @@
-import REGL from "regl";
-import { Mesh } from "../ts-type/util";
-import { sphere } from "../utils/geo/geo";
-import { View } from "../view/view";
-import { EllipseProjection } from "../utils/projection/global";
+import REGL from 'regl'
+import { Mesh } from '../ts-type/util'
+import { sphere } from '../utils/geo/geo'
+import { View } from '../view/view'
+import { EllipseProjection } from '../utils/projection/global'
 
 export class Earth {
     public view: View = new View();
@@ -13,7 +13,5 @@ export class Earth {
         this.interactiveSphere = sphere(regl, [EllipseProjection.a, 0, 0], EllipseProjection.a);
     }
 
-    render() {
-
-    }
+  render() {}
 }
