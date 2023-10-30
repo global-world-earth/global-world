@@ -7,10 +7,10 @@ import { EllipseProjection } from "../utils/projection/global";
 export class Earth {
     public view: View = new View();
     // 测试用球
-    public mesh: Mesh;
+    public interactiveSphere: Mesh;
 
     constructor(regl: REGL.Regl) {
-        this.mesh = sphere(regl, [EllipseProjection.a, 0, 0], EllipseProjection.a);
+        this.interactiveSphere = sphere(regl, [EllipseProjection.a, 0, 0], EllipseProjection.a);
     }
 
     render() {
