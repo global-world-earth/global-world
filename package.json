@@ -2,8 +2,7 @@
   "name": "global-world",
   "version": "1.0.0",
   "description": "三维地球",
-  "keywords": [
-  ],
+  "keywords": [],
   "exports": {
     ".": {
       "require": "./dist/index.cjs",
@@ -35,7 +34,7 @@
     "not ie 11",
     "not op_mini all"
   ],
-  "repository": "",
+  "repository": "git@github.com:global-world-earth/global-world.git",
   "author": "",
   "license": "ISC",
   "bugs": {
