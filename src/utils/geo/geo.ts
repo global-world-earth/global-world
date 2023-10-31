@@ -18,20 +18,20 @@ export function sphere(
   heightSegments = Math.max(2, Math.floor(heightSegments))
   const thetaEnd = Math.min(thetaStart + thetaLength, Math.PI)
   let index = 0
-  const grid = []
+  const grid: number[][] = []
   const vertex: number[] = []
   const normal: Float32Array = new Float32Array([0, 1, 0])
   const [ox, oy, oz] = center
 
   // buffers
-  const indices = []
-  const vertices = []
-  const normals = []
-  const uvs = []
+  const indices: number[] = []
+  const vertices: number[] = []
+  const normals: number[] = []
+  const uvs: number[] = []
 
   // generate vertices, normals and uvs
   for (let iy = 0; iy <= heightSegments; iy++) {
-    const verticesRow = []
+    const verticesRow: number[] = []
     const v = iy / heightSegments
     // special case for the poles
 
@@ -43,20 +43,20 @@ export function sphere(
     }
 
     for (let ix = 0; ix <= widthSegments; ix++) {
-      const u = ix / widthSegments
+      const u = ix / widthSegments;
       // vertex
-      vertex[0] = -radius * Math.cos(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength)
-      vertex[1] = radius * Math.cos(thetaStart + v * thetaLength)
-      vertex[2] = radius * Math.sin(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength)
-      vertices.push(vertex[0] + ox, vertex[1] + oy, vertex[2] + oz)
+      vertex[0] = -radius * Math.cos(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength);
+      vertex[1] = radius * Math.cos(thetaStart + v * thetaLength);
+      vertex[2] = radius * Math.sin(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength);
+      vertices.push(vertex[0] + ox, vertex[1] + oy, vertex[2] + oz);
       // normal
-      vec3.normalize(normal, new Float32Array(vertex))
-      normals.push(normal[0], normal[1], normal[2])
+      vec3.normalize(normal, new Float32Array(vertex));
+      normals.push(normal[0], normal[1], normal[2]);
       // uv
-      uvs.push(u + uOffset, 1 - v)
-      verticesRow.push(index++)
+      uvs.push(u + uOffset, 1 - v);
+      verticesRow.push(index++);
     }
-    grid.push(verticesRow)
+    grid.push(verticesRow);
   }
 
   // indices
