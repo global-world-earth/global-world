@@ -6,7 +6,8 @@ import nodeResolve from '@rollup/plugin-node-resolve'
 import serve from 'rollup-plugin-serve'
 // 热更新服务
 import livereload from 'rollup-plugin-livereload'
-
+// glsl加载
+import glslify from 'rollup-plugin-glslify'
 import esbuild from 'rollup-plugin-esbuild'
 import typescript from '@rollup/plugin-typescript';
 import eslint from "@rollup/plugin-eslint";
@@ -64,6 +65,7 @@ export default {
         '.json': 'json',
       },
     }),
+    glslify(),
     // 热更新
     !isProd() && livereload({
       watch: ['dist', 'demos'],
