@@ -20,5 +20,5 @@
     "src",
     "types"
   ],
-  "exclude": ["node_modules", "**/__test?__", "**/dist"]
+  "exclude": ["node_modules", "**/__test?__", "**/dist", "shader/**"]
 }
