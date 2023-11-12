@@ -49,16 +49,12 @@ export class EllipseProjection {
     // ES = 0.006694379990141316
     const a = this.a
     const b = this.b
-    let HALF_PI = Math.PI / 2
-    let es = (a * a - b * b) / (a * a)
-    let genau = 1e-12
-    let genau2 = genau * genau
-    let maxiter = 30
+    const HALF_PI = Math.PI / 2
+    const es = (a * a - b * b) / (a * a)
+    const genau = 1e-12
+    const genau2 = genau * genau
+    const maxiter = 30
 
-    let P /* distance between semi-minor axis and location */
-    let RR /* distance between center and location */
-    let CT /* sin of geocentric latitude */
-    let ST /* cos of geocentric latitude */
     let RX
     let RK
     let RN /* Earth radius at location */
@@ -69,15 +65,17 @@ export class EllipseProjection {
     let SDPHI /* end-criterium: addition-theorem of sin(Latitude(iter)-Latitude(iter-1)) */
     let iter /* # of continous iteration, max. 30 is always enough (s.a.) */
 
-    let X = position[0]
-    let Y = position[1]
-    let Z = position[2] // Z value not always supplied
+    const X = position[0]
+    const Y = position[1]
+    const Z = position[2] // Z value not always supplied
     let lng
     let lat
     let Height
 
-    P = Math.sqrt(X * X + Y * Y)
-    RR = Math.sqrt(X * X + Y * Y + Z * Z)
+    /* distance between semi-minor axis and location */
+    const P = Math.sqrt(X * X + Y * Y)
+     /* distance between center and location */
+    const RR = Math.sqrt(X * X + Y * Y + Z * Z)
     if (P / a < genau) {
       /*  special case, if P=0. (X=0., Y=0.) */
       lng = 0.0
@@ -104,8 +102,8 @@ export class EllipseProjection {
      * 2*10**-7 arcsec.
      * --------------------------------------------------------------
      */
-    CT = Z / RR
-    ST = P / RR
+    const CT = Z / RR
+    const ST = P / RR
     RX = 1.0 / Math.sqrt(1.0 - es * (2.0 - es) * ST * ST)
     CPHI0 = ST * (1.0 - es) * RX
     SPHI0 = CT * RX

@@ -65,12 +65,17 @@ export default {
         '.json': 'json',
       },
     }),
-    glslify(),
+    
+    glslify({
+      compress: false,
+    }),
+
     // 热更新
     !isProd() && livereload({
       watch: ['dist', 'demos'],
       verbose: false
     }),
+
     // 开发模式开启静态服务器
     !isProd() && serve({
       open: true,

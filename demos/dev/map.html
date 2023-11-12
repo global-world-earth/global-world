@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>测试地图初始化</title>
-  <script src="/dist/index.js" ></script>
-
-
     <style>
         html,
         body {
@@ -24,6 +21,13 @@
 
 <body>
     <div class="map" id="map"></div>
+
+    <script src="/dist/index.js"></script>
+    <script>
+        var map = new GMap.GlobalMap({
+            container: 'map',
+        });
+    </script>
 </body>
 
 </html>

@@ -1,4 +1,5 @@
 import { CoreMap } from '../core/map'
+import { EarthLayer } from '../layer/earth'
 // import { Layer } from '../layer/layer';
 
 export class GlobalMap extends CoreMap {
@@ -15,7 +16,20 @@ export class GlobalMap extends CoreMap {
     return this.status
   }
 
-  public requestRender() {
-    this.render()
+  public ready(): void {
+    super.ready();
+    this.addEarth();
+  }
+
+  protected addEarth() {
+    this.layers.push(new EarthLayer({
+      id: 'earth',
+      map: this,
+      zooms: [0, 30],
+      zIndex: 0,
+      visible: true,
+      preLoad: true,
+      depth: true,
+    }))
   }
 }

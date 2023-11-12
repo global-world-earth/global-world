@@ -1,5 +1,5 @@
-import REGL from 'regl'
-import { Mesh } from '../../ts-type/util'
+import type REGL from 'regl'
+import type { Mesh } from '../../../types/util'
 import { vec3 } from 'gl-matrix'
 
 // 生成球面网格，参考的 threejs
@@ -72,6 +72,7 @@ export function sphere(
     }
   }
 
+  // console.log(vertices, indices);
   return {
     index: regl.elements({
       primitive: 'triangles',
@@ -79,6 +80,7 @@ export function sphere(
       data: indices
     }),
     vertex: {
+      // buffer: regl.buffer([0, 0, 0, 0.3, 0.3, 0, 0.5, -0.5, 0]),
       buffer: regl.buffer(vertices),
       offset: 0,
       stride: 4 * 3,

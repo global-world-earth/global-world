@@ -1,1 +1,1 @@
-export * as GlobalMap from './interface/map'
+export * from './interface/map'

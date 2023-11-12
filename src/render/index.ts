@@ -1,4 +1,4 @@
-import REGL from "regl";
+import type REGL from "regl";
 
 export abstract class Render {
     public regl: REGL.Regl;

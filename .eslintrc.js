@@ -39,10 +39,11 @@ module.exports = defineConfig({
   ],
   rules: {
     // js/ts
-    'no-console': ['warn', { allow: ['error'] }],
+    // 'no-unused-vars': ['off'],
+    // 'no-console': ['warn', { allow: ['error'] }],
     'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'],
     // camelcase: ['error', { properties: 'never' }],
-
+    'import/order': ['off'],
     'no-var': 'error',
     'no-empty': ['error', { allowEmptyCatch: true }],
     'no-void': 'error',
@@ -78,22 +79,22 @@ module.exports = defineConfig({
     // import
     'import/first': 'error',
     'import/no-duplicates': 'error',
-    'import/order': [
-      'error',
-      {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          'parent',
-          'sibling',
-          'index',
-          'object',
-          'type',
-        ],
+    // 'import/order': [
+    //   'error',
+    //   {
+    //     groups: [
+    //       'builtin',
+    //       'external',
+    //       'internal',
+    //       'parent',
+    //       'sibling',
+    //       'index',
+    //       'object',
+    //       'type',
+    //     ],
 
-        pathGroupsExcludedImportTypes: ['type'],
-      },
-    ],
+    //     pathGroupsExcludedImportTypes: ['type'],
+    //   },
+    // ],
   },
 })

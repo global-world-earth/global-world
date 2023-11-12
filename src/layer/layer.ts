@@ -1,38 +1,44 @@
+import type REGL from 'regl'
 import { Event } from '../core/event'
-import { GlobalMap } from '../interface/map'
-import { LayerOptions } from '../ts-type/layer'
+import type { GlobalMap } from '../interface/map'
+import type { Render } from '../render'
+import type { LayerOptions } from '../../types/layer'
 
 export abstract class Layer extends Event {
   public id = 'layer'
-  public zIndex: number = 1
-  public opacity: number = 1
-  public visible: boolean = true
+  public zIndex = 1
+  public opacity = 1
+  public visible = true
   public zooms: [number, number] = [2, 26]
   // 是否预加载数据
-  public preLoad: boolean = false
-  public depth: boolean = false
+  public preLoad = false
+  public depth = false
   public map: GlobalMap | undefined
+  public regl!: REGL.Regl
+
+  protected renderer: Render | undefined;
 
   constructor(opts: LayerOptions) {
     super()
     this._setOptions(opts)
 
     if (opts.map) {
-      this.setMap(opts.map)
+      this.setMap(opts.map, true)
     }
   }
 
   /**
    * 需要实现是否加载数据，是否渲染等逻辑
    */
-  public abstract render: () => void
+  public abstract render(): void
 
-  public setMap(map: GlobalMap | null) {
-    if (this.map === map) {
+  public setMap(map: GlobalMap | null, force = true) {
+    if (!force && this.map === map) {
       return
     }
     if (map) {
       this.map = map
+      this.regl = map.getRegl()
       this.onAdd()
     } else {
       this.map = undefined
@@ -63,15 +69,31 @@ export abstract class Layer extends Event {
    * 当添加到地图上的时候
    */
   protected onAdd() {
-    if (this.preLoad) {
-    }
     this.map?.requestRender()
+  }
+
+  // 判断是否可以渲染
+  protected canRender() {
+    if (!this.map) {
+      return false;
+    }
+
+    if (!this.visible) {
+      return false;
+    }
+
+    const { zoom } = this.map.getViewStatus();
+    if (this.zooms[0] > zoom && this.zooms[1] < zoom) {
+      return false;
+    }
+    
+    return true;
   }
 
   private _setOptions(opts: LayerOptions) {
     for (const key in opts) {
       if (Object.prototype.hasOwnProperty.call(opts, key)) {
-        ;(this as any)[key] = (opts as any)[key]
+        (this as any)[key] = (opts as any)[key]
       }
     }
     // this.id = opts.id !== undefined ? opts.id : this.id;
