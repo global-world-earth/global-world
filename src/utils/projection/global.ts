@@ -1,10 +1,10 @@
 import { toAngle, toRad } from '../math'
 
 export class EllipseProjection {
-  public static a = 6378137
-  public static b = 6356752
+  static a = 6378137
+  static b = 6356752
 
-  public static project(lng: number, lat: number): [number, number, number] {
+  static project(lng: number, lat: number): [number, number, number] {
     const result: [number, number, number] = [0, 0, 0]
     const a = this.a
     const b = this.b
@@ -45,7 +45,7 @@ export class EllipseProjection {
     return result
   }
 
-  public static Unproject(position: [number, number, number]): [number, number, number] {
+  static Unproject(position: [number, number, number]): [number, number, number] {
     // ES = 0.006694379990141316
     const a = this.a
     const b = this.b
@@ -132,7 +132,7 @@ export class EllipseProjection {
     return [toAngle(lng), toAngle(lat), Height]
   }
 
-  public static GetResolution(zoom: number) {
+  static GetResolution(zoom: number) {
     return (20037508.342789244 * 2) / 256 / Math.pow(2, zoom)
   }
 }

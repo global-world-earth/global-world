@@ -6,16 +6,16 @@ import type { LayerOptions } from '../../types/layer'
 import { CoreMap } from '../core/map'
 
 export abstract class Layer extends Event {
-  public id = 'layer'
-  public zIndex = 1
-  public opacity = 1
-  public visible = true
-  public zooms: [number, number] = [2, 26]
+  id = 'layer'
+  zIndex = 1
+  opacity = 1
+  visible = true
+  zooms: [number, number] = [2, 26]
   // 是否预加载数据
-  public preLoad = false
-  public depth = false
-  public map: GlobalMap | undefined
-  public regl!: REGL.Regl
+  preLoad = false
+  depth = false
+  map: GlobalMap | undefined
+  regl!: REGL.Regl
 
   protected renderer: Render | undefined;
 
@@ -31,9 +31,9 @@ export abstract class Layer extends Event {
   /**
    * 需要实现是否加载数据，是否渲染等逻辑
    */
-  public abstract render(map: CoreMap): void
+  abstract render(map: CoreMap): void
 
-  public setMap(map: GlobalMap | null, force = true) {
+  setMap(map: GlobalMap | null, force = true) {
     if (!force && this.map === map) {
       return
     }
@@ -46,23 +46,23 @@ export abstract class Layer extends Event {
     }
   }
 
-  public setzIndex(zIndex: number) {
+  setzIndex(zIndex: number) {
     this.zIndex = zIndex
   }
 
-  public setVisible(visible: boolean) {
+  setVisible(visible: boolean) {
     this.visible = visible
   }
 
-  public setZooms(zooms: [number, number]) {
+  setZooms(zooms: [number, number]) {
     this.zooms = zooms
   }
 
-  public setOpacity(opacity: number) {
+  setOpacity(opacity: number) {
     this.opacity = opacity
   }
 
-  public destroy() {
+  destroy() {
     this.map = undefined
   }
 

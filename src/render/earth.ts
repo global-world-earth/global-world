@@ -6,7 +6,6 @@ import BaseVertexShader from '../shader/base/base.vertex.glsl'
 import BaseFragmentShader from '../shader/base/base.fragment.glsl'
 import { Render } from '.'
 import { STATUS, loadTexture } from '../utils/render'
-// import { mat4 } from 'gl-matrix'
 
 export class EarthRender extends Render {
   // 测试用球

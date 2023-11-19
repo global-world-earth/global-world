@@ -1,6 +1,10 @@
 import { vec3, mat4 } from 'gl-matrix'
 import { toRad } from '../utils/math'
 
+// 右手坐标系
+// x 轴正方向是经纬度 [0, 0]
+// z 轴正方向是正北
+// y 轴正方向是维度 90 度
 export class Camera {
   aspect = 1
   fov = 60
@@ -8,8 +12,8 @@ export class Camera {
   far = 1000
   size: [number, number] = [1920, 1080]
 
-  cameraPosition: [number, number, number] = [0, 0, 0]
-  cameraUp: vec3 = vec3.fromValues(0, 1, 0)
+  position: [number, number, number] = [0, 0, 0]
+  up: vec3 = vec3.fromValues(0, 1, 0)
   viewProject: mat4 = mat4.create()
 
   status: CameraStatus = {
@@ -35,8 +39,13 @@ export class Camera {
     this.updateView()
   }
 
+  getStatus() {
+    return this.status
+  }
+
   updateView() {
     this._calcCameraPosition()
+    this._calcUp()
     this.updateMatrix()
   }
 
@@ -44,13 +53,13 @@ export class Camera {
     const pro = mat4.create()
     const view = mat4.create()
     mat4.perspectiveNO(pro, toRad(this.fov), this.aspect, this.near, this.far)
+    console.log('up', ...this.up, 'position', ...this.position, 'target', ...this.status.target);
     mat4.lookAt(
       view,
-      this.cameraPosition,
+      this.position,
       vec3.fromValues(this.status.target[0], this.status.target[1], 0),
-      this.cameraUp
+      this.up
     )
-    console.log('this.near, this.far', this.near, this.far, this.aspect, view, pro)
     mat4.mul(this.viewProject, pro, view)
   }
 
@@ -64,10 +73,14 @@ export class Camera {
     const pos = vec3.fromValues(height, 0, 0)
     vec3.rotateY(pos, pos, [0, 0, 0], toRad(pitch))
     vec3.rotateX(pos, pos, [0, 0, 0], toRad(rotation))
-    this.cameraPosition = [pos[0], pos[1], pos[2]]
-    console.log('this.cameraPosition', this.cameraPosition)
-    // target[0], target[1]
+    this.position = [pos[0], pos[1], pos[2]]
   }
 
-  // private _calcUp() {}
+  private _calcUp() {
+    const { pitch, rotation } = this.status
+    const up = vec3.fromValues(0, 0, 1)
+    vec3.rotateY(up, up, [0, 0, 0], toRad(pitch))
+    vec3.rotateX(up, up, [0, 0, 0], toRad(rotation))
+    this.up = up
+  }
 }

@@ -1,19 +1,19 @@
 export class Event {
-  public static addListener(intance: any, eventName: string, cb: any) {
+  static addListener(intance: any, eventName: string, cb: any) {
     intance.on(eventName, cb)
   }
-  public static trigger(intance: any, eventName: string, data: any) {
+  static trigger(intance: any, eventName: string, data: any) {
     intance.emit(eventName, data)
   }
-  public static clearListeners(instance: any, eventName: string) {
+  static clearListeners(instance: any, eventName: string) {
     instance.clearEvents(eventName)
   }
-  public static addDomListener(intance: HTMLElement, eventName: string, cb: any) {
+  static addDomListener(intance: HTMLElement, eventName: string, cb: any) {
     intance.addEventListener(eventName, cb)
   }
   private _events: Record<string, any[]> = {}
 
-  public on(type: string | string[], fn: (e: any) => void, context: any = this, once = false) {
+  on(type: string | string[], fn: (e: any) => void, context: any = this, once = false) {
     let types
     if (!Array.isArray(type)) {
       types = [type]
@@ -27,7 +27,7 @@ export class Event {
     return this
   }
 
-  public off(type: string, fn: (e: any) => void, context: any = this) {
+  off(type: string, fn: (e: any) => void, context: any = this) {
     const events = this._events
     if (type in events) {
       for (let i = 0; i < events[type].length; i += 1) {
@@ -40,7 +40,7 @@ export class Event {
     return this // 返回链对象
   }
 
-  public hasEvents(type: string, fn: (e: any) => void, context: any = this) {
+  hasEvents(type: string, fn: (e: any) => void, context: any = this) {
     // 当传了第二、三个参数时，就检查某一个特定的监听是否存在
     const events = this._events
     if (type && fn && type in events) {
@@ -53,7 +53,7 @@ export class Event {
     return false
   }
 
-  public clearEvents(type: string) {
+  clearEvents(type: string) {
     if (type) {
       if (this._events[type]) {
         delete this._events[type]
@@ -64,7 +64,7 @@ export class Event {
     return this
   }
 
-  public emit(type: string, data: any = {}) {
+  emit(type: string, data: any = {}) {
     if (!(type in this._events)) {
       return this
     }
@@ -94,7 +94,7 @@ export class Event {
     return this
   }
 
-  public getEvents() {
+  getEvents() {
     return this._events
   }
 

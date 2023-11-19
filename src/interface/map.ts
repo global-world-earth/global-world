@@ -8,15 +8,15 @@ export class GlobalMap extends CoreMap {
     Object.assign(this.status, opts)
   }
 
-  public setViewStatus(status: ViewStatus) {
+  setViewStatus(status: ViewStatus) {
     return Object.assign(this.status, status)
   }
 
-  public getViewStatus() {
+  getViewStatus() {
     return this.status
   }
 
-  public ready(): void {
+  ready(): void {
     super.ready();
     this.addEarth();
   }

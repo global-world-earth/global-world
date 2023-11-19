@@ -8,7 +8,7 @@ export class EarthLayer extends Layer {
     this.renderer = new EarthRender(this.regl)
   }
 
-  public render() {
+  render() {
     if (!this.canRender()) {
       return
     }

@@ -34,3 +34,19 @@ export function watchSize(element: HTMLElement, listener: (width: number, height
     iframe.contentWindow!.onresize = null
   }
 }
+
+// 计算鼠标在当前容器的位置
+export function containerPosition(event: MouseEvent | TouchEvent, el: HTMLElement) {
+  const rect = el.getBoundingClientRect();
+  if (event instanceof TouchEvent) {
+    let t: Touch;
+    if (event.touches.length > 0) {
+      t = event.touches[0];
+    } else {
+      t = event.changedTouches[event.changedTouches.length - 1];
+    }
+    return [t.clientX - rect.left - el.clientLeft, t.clientY - rect.top - el.clientTop];
+  }
+
+  return [event.clientX - rect.left - el.clientLeft, event.clientY - rect.top - el.clientTop];
+}

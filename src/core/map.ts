@@ -17,7 +17,7 @@ export class CoreMap extends Event {
   regl!: Regl
   container!: HTMLElement | null
   canvas!: HTMLCanvasElement
-  view: View = new View()
+  view!: View
 
   protected _waitingRender = 0
 
@@ -62,6 +62,10 @@ export class CoreMap extends Event {
     this.requestRender();
   }
 
+  getContainer() {
+    return this.container
+  }
+
   protected render() {
     this.regl.clear({
       color: [0, 0, 0, 0],
@@ -79,8 +83,10 @@ export class CoreMap extends Event {
       console.error('没有找到 id 为', id, '的元素，请检查 "container" 属性的值！')
       return false
     }
+    this.view = new View(this)
     const layersContainer = document.createElement('div')
     this.canvas = document.createElement('canvas')
+    this.canvas.className = 'gm-canvas'
 
     watchSize(this.container, (w: number, h: number) => {
       this.canvas.width = w * env.devicePixelRatio()
