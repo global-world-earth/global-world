@@ -1,19 +1,22 @@
 import type REGL from 'regl'
-import type { Mesh } from '../../types/util'
+import type { Mesh, TextureData } from '../../types/util'
 import { sphere } from '../utils/geo/geo'
-import { View } from '../view/view'
 import { EllipseProjection } from '../utils/projection/global'
 import BaseVertexShader from '../shader/base/base.vertex.glsl'
 import BaseFragmentShader from '../shader/base/base.fragment.glsl'
 import { Render } from '.'
+import { STATUS, loadTexture } from '../utils/render'
 // import { mat4 } from 'gl-matrix'
 
 export class EarthRender extends Render {
-  public view: View = new View();
   // 测试用球
-  public interactiveSphere: Mesh;
+  interactiveSphere: Mesh
+  drawSphere!: REGL.DrawCommand
 
-  public drawSphere!: REGL.DrawCommand
+  private _earthTex: TextureData = {
+    status: STATUS.unload,
+    texture: null,
+  };
 
   constructor(regl: REGL.Regl) {
     super(regl);
@@ -22,7 +25,7 @@ export class EarthRender extends Render {
     this.init();
   }
 
-  public init(): void {
+  init(): void {
     this.drawSphere = this.regl({
       vert: BaseVertexShader,
       frag: BaseFragmentShader,
@@ -33,15 +36,16 @@ export class EarthRender extends Render {
       // depth: {
       //   enable: false,
       // },
+      blend: {
+        enable: false,
+      },
       attributes: {
         position: this.regl.prop('position'),
+        uv: this.regl.prop('uv'),
       },
       uniforms: {
         mvp: this.regl.prop('mvp'),
-      },
-      depth: { enable: false },
-      blend: {
-          enable: false,
+        texture: this.regl.prop('texture'),
       },
       // count: 10,
       // primitive: 'points'
@@ -49,17 +53,41 @@ export class EarthRender extends Render {
     });
   }
 
-  public render(): void {
-    console.log('this.view.getMVPMatrix()', this.view.getMVPMatrix());
-    this.drawSphere({
-      position: this.interactiveSphere.vertex,
-      index: this.interactiveSphere.index,
-      // mvp: mat4.create(),
-      mvp: this.view.getMVPMatrix(),
-    });
+  render(opt: any): void {
+    this._loadTexture(opt)
+    if (this._earthTex.status == STATUS.loaded) {
+      this.drawSphere({
+        position: this.interactiveSphere.vertex,
+        uv: this.interactiveSphere.uv,
+        index: this.interactiveSphere.index,
+        mvp: opt.view.getMVPMatrix(),
+        texture: this._earthTex.texture,
+      })
+    }
   }
 
-  public destroy(): void {
-    console.log('destroy');
+  destroy(): void {
+    console.log('destroy')
+    this._earthTex.texture && this._earthTex.texture.destroy()
+  }
+
+  // 临时测试写在这里
+  private _loadTexture(opt: any) {
+    if (this._earthTex.status != STATUS.unload) {
+      return;
+    }
+
+    this._earthTex.status = STATUS.loading
+    loadTexture(this.regl, '../../assets/earth.jpeg', true, (error, tex) => {
+      if (tex) {
+        this._earthTex.texture = tex
+        this._earthTex.status = STATUS.loaded
+        opt.map && opt.map.requestRender()
+        console.log('加载成功')
+      } else {
+        console.log('加载错误:', error)
+        this._earthTex.status = STATUS.error
+      }
+    })
   }
 }

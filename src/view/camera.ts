@@ -10,7 +10,7 @@ export class Camera {
 
   cameraPosition: [number, number, number] = [0, 0, 0]
   cameraUp: vec3 = vec3.fromValues(0, 1, 0)
-  viewPro: mat4 = mat4.create()
+  viewProject: mat4 = mat4.create()
 
   status: CameraStatus = {
     pitch: 0,
@@ -24,10 +24,10 @@ export class Camera {
   }
 
   setOptions(opts: CameraOptions) {
-    this.aspect = opts.aspect
-    this.fov = opts.fov
-    this.near = opts.near
-    this.far = opts.far
+    this.aspect = opts.aspect || this.aspect
+    this.fov = opts.fov || this.fov
+    this.near = opts.near || this.near
+    this.far = opts.far || this.far
   }
 
   setStatus(status: CameraStatus) {
@@ -51,8 +51,12 @@ export class Camera {
       this.cameraUp
     )
     console.log('this.near, this.far', this.near, this.far, this.aspect, view, pro)
+    mat4.mul(this.viewProject, pro, view)
+  }
 
-    mat4.mul(this.viewPro, pro, view)
+  getMvp() {
+    this.updateMatrix()
+    return this.viewProject
   }
 
   private _calcCameraPosition() {

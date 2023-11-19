@@ -8,7 +8,7 @@ export abstract class Render {
     // 初始化渲染指令
     public abstract init(): void;
     // 渲染
-    public abstract render(): void;
+    public abstract render(options: any): void;
     // 销毁资源
     public abstract destroy(): void;
 }

@@ -4,20 +4,22 @@ import { env } from '../utils/dom/env'
 import { Event } from './event'
 import type { Layer } from '../layer/layer'
 import type { Regl } from 'regl'
+import { View } from '../view/view'
 
 export class CoreMap extends Event {
-  public status: ViewStatus = {
+  status: ViewStatus = {
     center: [116, 40],
     zoom: 12,
     pitch: 0,
     rotation: 0
   }
-  public layers: Layer[] = []
-  public regl!: Regl
-  public container!: HTMLElement | null
-  public canvas!: HTMLCanvasElement
+  layers: Layer[] = []
+  regl!: Regl
+  container!: HTMLElement | null
+  canvas!: HTMLCanvasElement
+  view: View = new View()
 
-  protected _waitingRender = 0;
+  protected _waitingRender = 0
 
   constructor(opts: MapOptions) {
     super()
@@ -35,6 +37,7 @@ export class CoreMap extends Event {
             console.error(err)
           } else {
             this.regl = regl
+            regl.poll()
             this.emit('glready');
           }
         }
@@ -42,11 +45,11 @@ export class CoreMap extends Event {
     }
   }
 
-  public getRegl() {
+  getRegl() {
     return this.regl
   }
 
-  public requestRender() {
+  requestRender() {
     if (this._waitingRender === 0) {
       this._waitingRender = requestAnimationFrame(() => {
         this.render()
@@ -55,7 +58,7 @@ export class CoreMap extends Event {
     }
   }
 
-  public ready() {
+  ready() {
     this.requestRender();
   }
 
@@ -66,7 +69,7 @@ export class CoreMap extends Event {
     })
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i]
-      layer.render()
+      layer.render(this)
     }
   }
 
@@ -78,11 +81,16 @@ export class CoreMap extends Event {
     }
     const layersContainer = document.createElement('div')
     this.canvas = document.createElement('canvas')
+
     watchSize(this.container, (w: number, h: number) => {
       this.canvas.width = w * env.devicePixelRatio()
       this.canvas.height = h * env.devicePixelRatio()
       this.canvas.style.width = `${w}px`
       this.canvas.style.height = `${h}px`
+      this.view.setAspect(w / h)
+      this.regl && this.regl.poll()
+      this.emit('resize', { width: w, heigt: h })
+      this.requestRender()
     })
 
     layersContainer.className = 'gmap-layers'
@@ -92,10 +100,9 @@ export class CoreMap extends Event {
     layersContainer.style.overflow = 'hidden'
     layersContainer.style.width = '100%'
     layersContainer.style.height = '100%'
-    this.canvas.width = this.container.offsetWidth
-    this.canvas.height = this.container.offsetHeight
 
     this.container.appendChild(layersContainer)
     layersContainer.appendChild(this.canvas)
+
   }
 }

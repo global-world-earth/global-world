@@ -10,8 +10,12 @@ export class EarthLayer extends Layer {
 
   public render() {
     if (!this.canRender()) {
-      return;
+      return
     }
-    this.renderer?.render()
+
+    this.renderer?.render({
+      map: this.map,
+      view: this.map?.view,
+    })
   }
 }

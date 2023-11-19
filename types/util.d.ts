@@ -1,4 +1,5 @@
-import REGL from 'regl'
+import REGL, { Texture } from 'regl'
+import { STATUS } from '../src/utils/render'
 
 interface MeshBuffer {
   buffer: REGL.Buffer
@@ -14,4 +15,9 @@ interface Mesh {
   color?: MeshBuffer
   normal?: MeshBuffer
   uv?: MeshBuffer
+}
+
+interface TextureData {
+  status: STATUS
+  texture: Texture | null
 }

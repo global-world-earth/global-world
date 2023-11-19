@@ -3,6 +3,7 @@ import { Event } from '../core/event'
 import type { GlobalMap } from '../interface/map'
 import type { Render } from '../render'
 import type { LayerOptions } from '../../types/layer'
+import { CoreMap } from '../core/map'
 
 export abstract class Layer extends Event {
   public id = 'layer'
@@ -30,7 +31,7 @@ export abstract class Layer extends Event {
   /**
    * 需要实现是否加载数据，是否渲染等逻辑
    */
-  public abstract render(): void
+  public abstract render(map: CoreMap): void
 
   public setMap(map: GlobalMap | null, force = true) {
     if (!force && this.map === map) {
@@ -86,7 +87,7 @@ export abstract class Layer extends Event {
     if (this.zooms[0] > zoom && this.zooms[1] < zoom) {
       return false;
     }
-    
+
     return true;
   }
 
