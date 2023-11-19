@@ -11,7 +11,8 @@ export class CoreMap extends Event {
     center: [116, 40],
     zoom: 12,
     pitch: 0,
-    rotation: 0
+    rotation: 0,
+    zooms: [1, 30]
   }
   layers: Layer[] = []
   regl!: Regl
@@ -94,6 +95,7 @@ export class CoreMap extends Event {
       this.canvas.style.width = `${w}px`
       this.canvas.style.height = `${h}px`
       this.view.setAspect(w / h)
+      this.view.setSize(w, h)
       this.regl && this.regl.poll()
       this.emit('resize', { width: w, heigt: h })
       this.requestRender()

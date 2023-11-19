@@ -8,6 +8,7 @@ export class UIEvents {
   private _mouseMoveBind = this._mouseMove.bind(this)
   private _mouseDownBind = this._mouseDown.bind(this)
   private _mouseUpBind = this._mouseUp.bind(this)
+  private _wheelBind = this._wheel.bind(this)
   private _contextMenuBind = this._contextMenu.bind(this)
   private _startMousePos = [0, 0]
   private _lastMousePos = [0, 0]
@@ -25,6 +26,7 @@ export class UIEvents {
       this.container.addEventListener('mousedown', this._mouseDownBind)
       this.container.addEventListener('mousemove', this._mouseMoveBind)
       this.container.addEventListener('mouseup', this._mouseUpBind)
+      this.container.addEventListener('wheel', this._wheelBind)
       this.container.addEventListener('contextmenu', this._contextMenuBind)
     }
   }
@@ -79,6 +81,16 @@ export class UIEvents {
     this._startMousePos = [0, 0]
     this._pressStatus = MouseStatus.never
     this._pitchOrRotate = ''
+  }
+
+  _wheel(event: WheelEvent) {
+    const value =
+      event.deltaMode === WheelEvent.DOM_DELTA_LINE
+        ? event.deltaY * 40
+        : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
+          ? event.deltaY * 400
+          : event.deltaY;
+    this.map.view.addZoom(-value / 100);
   }
 
   _contextMenu(event: MouseEvent) {

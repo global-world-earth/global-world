@@ -9,6 +9,8 @@ export class View extends Event {
   mvpMatrix: mat4 = mat4.create()
   uiEvents: UIEvents
   map: CoreMap
+  size = [0, 0]
+  zoom = 2
   camera: Camera = new Camera({
     fov: 45,
     aspect: 1,
@@ -20,7 +22,7 @@ export class View extends Event {
     super()
     this.uiEvents = new UIEvents(map)
     this.map = map
-    this.setHeight(EllipseProjection.a * 2)
+    this._cameraOptionsByZoom()
   }
 
   addPitch(delta: number) {
@@ -42,6 +44,18 @@ export class View extends Event {
     this.map.requestRender()
   }
 
+  addZoom(delta: number) {
+    this.zoom += delta
+    this.zoom = Math.min(this.map.status.zooms[1], Math.max(this.map.status.zooms[0], this.zoom))
+    this._cameraOptionsByZoom()
+  }
+
+  setZoom(zoom: number) {
+    this.zoom = zoom
+    this.zoom = Math.min(this.map.status.zooms[1], Math.max(this.map.status.zooms[0], this.zoom))
+    this._cameraOptionsByZoom()
+  }
+
   setCenter(center: [number, number]) {
     const status = this.camera.getStatus()
     this.camera.setStatus({
@@ -51,24 +65,36 @@ export class View extends Event {
     this.map.requestRender()
   }
 
-  setHeight(height: number) {
-    this.camera.far = height * 20
-    this.camera.near = height / 100
-    this.camera.setStatus({
-      target: [0, 0],
-      pitch: 0,
-      rotation: 0,
-      height,
-    })
-    this.map.requestRender()
-  }
 
   setAspect(aspect: number) {
     this.camera.aspect = aspect
     this.map.requestRender()
   }
 
+  setSize(w: number, h: number) {
+    this.size = [w, h]
+    this._cameraOptionsByZoom()
+  }
+
   getMVPMatrix() {
     return this.camera.getMvp()
+  }
+
+  // 根据 zoom，计算相机的相关高度，以及高度对应的远近平面
+  private _cameraOptionsByZoom() {
+    const status = this.camera.getStatus()
+    const height = this._calcHeight(this.zoom)
+    this.camera.far = height * 20
+    this.camera.near = height / 100
+    this.camera.setStatus({
+      ...status,
+      height,
+    })
+    this.map.requestRender()
+  }
+
+  private _calcHeight(zoom: number) {
+    const res = EllipseProjection.GetResolution(zoom);
+    return this.size[1] / 2 * res;
   }
 }

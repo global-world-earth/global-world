@@ -11,5 +11,6 @@ interface ViewStatus {
   zoom: number
   pitch: number
   rotation: number
-  center: [number, number]
+  center: [number, number],
+  zooms: [number, number]
 }
