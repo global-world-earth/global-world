@@ -84,6 +84,7 @@ export class UIEvents {
   }
 
   _wheel(event: WheelEvent) {
+    event.preventDefault()
     const value =
       event.deltaMode === WheelEvent.DOM_DELTA_LINE
         ? event.deltaY * 40
